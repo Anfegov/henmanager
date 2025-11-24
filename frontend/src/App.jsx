@@ -92,7 +92,7 @@ export default function App() {
         <Route
           path="/credits"
           element={
-            <ProtectedRoute requiredPermission="ManageCredits">
+            <ProtectedRoute requiredPermission="ViewSales">
               <Layout><CreditsPage /></Layout>
             </ProtectedRoute>
           }

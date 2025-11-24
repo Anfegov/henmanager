@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Grid, Card, CardContent, Typography, Stack, Table, TableHead, TableRow, TableCell,
   TableBody, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -9,8 +9,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { creditsApi } from "../api/creditsApi";
 import { paymentsApi } from "../api/paymentsApi";
+import { AuthContext } from "../auth/AuthContext";
 
 export const CreditsPage = () => {
+  const { hasPermission } = useContext(AuthContext);
   const [summary, setSummary] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [expanded, setExpanded] = useState({});
@@ -54,6 +56,8 @@ export const CreditsPage = () => {
       alert(e?.response?.data || "Error registrando abono");
     }
   };
+
+  const canRegisterPayment = hasPermission("RegisterPayment");
 
   return (
     <Grid container spacing={2}>
@@ -119,7 +123,7 @@ export const CreditsPage = () => {
                                     <TableCell align="right">${s.pendingAmount.toFixed(2)}</TableCell>
                                     <TableCell>{s.creditStatus}</TableCell>
                                     <TableCell align="right">
-                                      {s.pendingAmount > 0 && (
+                                      {canRegisterPayment && s.pendingAmount > 0 && (
                                         <Button size="small" startIcon={<PaidIcon/>}
                                           onClick={() => openPayment(s)}>
                                           Abonar

@@ -11,7 +11,7 @@ public record UpsertUserRequest(string UserName, string? Password, bool IsActive
 public abstract class MongoEntity
 {
     [BsonId]
-    [BsonRepresentation(BsonType.String)]
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid Id { get; set; }
 }
 
@@ -20,6 +20,7 @@ public class User : MongoEntity
     public string UserName { get; set; } = default!;
     public string PasswordHash { get; set; } = default!;
     public bool IsActive { get; set; } = true;
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public List<Guid> RoleIds { get; set; } = new();
 }
 
@@ -27,6 +28,7 @@ public class Role : MongoEntity
 {
     public string Name { get; set; } = default!;
     // permisos referenciados por UUID (PermissionEntity.Id)
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public List<Guid> PermissionIds { get; set; } = new();
     // compatibilidad con roles antiguos que guardaban códigos
     [BsonElement("permissions")]
@@ -62,10 +64,12 @@ public enum EggType
 
 public class EggProduction : MongoEntity
 {
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid HenBatchId { get; set; }
     public DateTime Date { get; set; } = DateTime.UtcNow.Date;
     public EggType EggType { get; set; }
     public int Quantity { get; set; }
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid RegisteredById { get; set; }
 }
 
@@ -83,7 +87,9 @@ public enum CreditStatus
 
 public class Sale : MongoEntity
 {
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid HenBatchId { get; set; }
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid CustomerId { get; set; }
     public DateTime Date { get; set; } = DateTime.UtcNow.Date;
 
@@ -98,6 +104,7 @@ public class Sale : MongoEntity
     public decimal PendingAmount { get; set; }
     public DateTime? PaidAt { get; set; }
 
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid SoldById { get; set; }
 
     [BsonIgnore]
@@ -106,20 +113,24 @@ public class Sale : MongoEntity
 
 public class Payment : MongoEntity
 {
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid SaleId { get; set; }
     public decimal Amount { get; set; }
     public DateTime PaidAt { get; set; } = DateTime.UtcNow;
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid PaidById { get; set; }
 }
 
 public class Supply : MongoEntity
 {
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid HenBatchId { get; set; }
     public DateTime Date { get; set; } = DateTime.UtcNow.Date;
     public string Name { get; set; } = default!;
     public decimal Quantity { get; set; }
     public string Unit { get; set; } = default!;
     public decimal? Cost { get; set; }
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid RegisteredById { get; set; }
 }
 
