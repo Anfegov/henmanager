@@ -1,0 +1,243 @@
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.csproj.AssemblyReference.cache
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfoInputs.cache
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfo.cs
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\HenManager.Api.staticwebassets.endpoints.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\HenManager.Api.exe
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\HenManager.Api.deps.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\HenManager.Api.runtimeconfig.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\DnsClient.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\MongoDB.Bson.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\MongoDB.Driver.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Moq.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\SharpCompress.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Snappier.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\xunit.abstractions.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\xunit.core.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\ZstdSharp.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\scopedcss\bundle\HenManager.Api.styles.css
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManag.EDEB89B5.Up2Date
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\refint\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\HenManager.Api.genruntimeconfig.cache
+C:\Users\Administrador\Downloads\hen-manager_current_with_sln\backend\obj\Debug\net8.0\ref\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.csproj.AssemblyReference.cache
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfoInputs.cache
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfo.cs
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\refint\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\HenManager.Api.staticwebassets.endpoints.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\HenManager.Api.exe
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\HenManager.Api.deps.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\HenManager.Api.runtimeconfig.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\DnsClient.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\MongoDB.Bson.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\MongoDB.Driver.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Moq.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\SharpCompress.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Snappier.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\xunit.abstractions.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\xunit.assert.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\xunit.core.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\ZstdSharp.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\scopedcss\bundle\HenManager.Api.styles.css
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManag.EDEB89B5.Up2Date
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\HenManager.Api.genruntimeconfig.cache
+C:\Users\Administrador\Downloads\hen-manager_fullstack_fixed\backend\obj\Debug\net8.0\ref\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.csproj.AssemblyReference.cache
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfoInputs.cache
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfo.cs
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\refint\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\HenManager.Api.staticwebassets.endpoints.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\HenManager.Api.exe
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\HenManager.Api.deps.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\HenManager.Api.runtimeconfig.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\DnsClient.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\MongoDB.Bson.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\MongoDB.Driver.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Moq.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\SharpCompress.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Snappier.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\xunit.abstractions.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\xunit.assert.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\xunit.core.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\ZstdSharp.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\scopedcss\bundle\HenManager.Api.styles.css
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManag.EDEB89B5.Up2Date
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\HenManager.Api.genruntimeconfig.cache
+C:\Users\Administrador\Downloads\hen-manager_full_credit_system_fixed_backend\backend\obj\Debug\net8.0\ref\HenManager.Api.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.csproj.AssemblyReference.cache
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfoInputs.cache
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.AssemblyInfo.cs
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\refint\HenManager.Api.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\HenManager.Api.staticwebassets.endpoints.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\HenManager.Api.exe
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\HenManager.Api.deps.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\HenManager.Api.runtimeconfig.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\HenManager.Api.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\HenManager.Api.pdb
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\DnsClient.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\MongoDB.Bson.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\MongoDB.Driver.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Moq.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\SharpCompress.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Snappier.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\xunit.abstractions.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\xunit.assert.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\xunit.core.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\ZstdSharp.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\scopedcss\bundle\HenManager.Api.styles.css
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManag.EDEB89B5.Up2Date
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\HenManager.Api.genruntimeconfig.cache
+C:\Users\Administrador\Downloads\henmanager_permissions_catalog_seeded_fixed_final2 (1)\backend\obj\Debug\net8.0\ref\HenManager.Api.dll
