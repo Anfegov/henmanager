@@ -38,6 +38,11 @@ const emptyForm = {
   isActive: true
 };
 
+const isValidEmail = (email) => {
+  if (!email) return true; // email is optional
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
 export const CustomersPage = () => {
   const { hasPermission } = useAuth();
   const canManage = hasPermission("ManageCustomers");
@@ -84,6 +89,10 @@ export const CustomersPage = () => {
     if (!canManage) return;
     if (!form.name.trim()) {
       showSnack("El nombre es obligatorio.", "warning");
+      return;
+    }
+    if (!isValidEmail(form.email?.trim())) {
+      showSnack("El formato del email no es válido.", "warning");
       return;
     }
     try {
@@ -235,6 +244,7 @@ export const CustomersPage = () => {
             />
             <TextField
               label="Email"
+              type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               fullWidth

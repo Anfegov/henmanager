@@ -92,4 +92,53 @@ public class SaleController : ControllerBase
         await _db.Sales.InsertOneAsync(sale);
         return Ok(sale);
     }
+
+    public record PaymentRequest(decimal Amount);
+
+    [HttpPost("{id:guid}/payments")]
+    public async Task<IActionResult> AddPayment(Guid id, [FromBody] PaymentRequest request)
+    {
+        if (request.Amount <= 0)
+            return BadRequest("El monto debe ser mayor a cero.");
+
+        var sale = await _db.Sales.Find(s => s.Id == id).FirstOrDefaultAsync();
+        if (sale is null)
+            return NotFound("La venta no existe.");
+
+        if (sale.PaymentType != PaymentType.Credito)
+            return BadRequest("Solo las ventas a crédito permiten abonos.");
+
+        if (sale.PendingAmount <= 0)
+            return BadRequest("La deuda ya está cancelada.");
+
+        if (request.Amount > sale.PendingAmount)
+            return BadRequest("El abono no puede ser mayor al saldo pendiente.");
+
+        // aplicar abono
+        sale.AmountPaid += request.Amount;
+        sale.PendingAmount -= request.Amount;
+
+        // actualizar estado según tu enum actual
+        if (sale.PendingAmount == 0)
+        {
+            sale.CreditStatus = CreditStatus.Cancelado;
+            sale.PaidAt = DateTime.UtcNow;
+        }
+        else
+        {
+            sale.CreditStatus = CreditStatus.Pendiente;
+            sale.PaidAt = null;
+        }
+
+        await _db.Sales.ReplaceOneAsync(s => s.Id == id, sale);
+
+        return Ok(new
+        {
+            message = "Abono registrado correctamente",
+            saleId = sale.Id,
+            amountPaid = sale.AmountPaid,
+            pendingAmount = sale.PendingAmount,
+            creditStatus = sale.CreditStatus.ToString()
+        });
+    }
 }

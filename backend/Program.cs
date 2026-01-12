@@ -23,6 +23,7 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mongo"));
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 builder.Services.AddSingleton<MongoDbContext>();
@@ -69,6 +70,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ManageUsers", p => p.RequireClaim("permission", "ManageUsers"));
     options.AddPolicy("ManageRoles", p => p.RequireClaim("permission", "ManageRoles"));
     options.AddPolicy("ManageCustomers", p => p.RequireClaim("permission", "ManageCustomers"));
+    options.AddPolicy("ViewCustomers", p => p.RequireClaim("permission", "ViewCustomers"));
 });
 
 builder.Services.AddCors(opt =>

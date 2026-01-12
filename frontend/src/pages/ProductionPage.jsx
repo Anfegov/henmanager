@@ -1,45 +1,112 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid, Card, CardContent, Typography, TextField, Button, Stack, MenuItem,
-  Table, TableHead, TableRow, TableCell, TableBody
+  Table, TableHead, TableRow, TableCell, TableBody, IconButton, Dialog,
+  DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { getBatches } from "../api/batchesApi";
-import { getProductions, registerProduction } from "../api/productionApi";
+import { getProductions, registerProduction, updateProduction, deleteProduction } from "../api/productionApi";
 
 const eggTypes = ["Pequeno","Mediano","Grande","ExtraGrande","DobleYema","Roto"];
+const today = new Date().toISOString().substring(0, 10);
 
 export const ProductionPage = () => {
   const [batches, setBatches] = useState([]);
   const [productions, setProductions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState({ open: false, id: null });
+  const [snack, setSnack] = useState({ open: false, msg: "", severity: "success" });
+
   const [form, setForm] = useState({
     henBatchId: "",
-    date: new Date().toISOString().substring(0, 10),
+    date: today,
     eggType: "Mediano",
     quantity: ""
   });
 
+  const showSnack = (msg, severity = "success") =>
+    setSnack({ open: true, msg, severity });
+
   const load = async () => {
-    const b = await getBatches();
-    setBatches(b.data.filter(x => x.isActive));
-    const p = await getProductions({});
-    setProductions(p.data);
+    setLoading(true);
+    try {
+      const b = await getBatches();
+      setBatches(b.data.filter(x => x.isActive));
+      const p = await getProductions({});
+      setProductions(p.data);
+    } catch (err) {
+      showSnack("Error cargando datos.", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
+  const resetForm = () => {
+    setEditing(null);
+    setForm({ henBatchId: "", date: today, eggType: "Mediano", quantity: "" });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await registerProduction({
-      henBatchId: form.henBatchId,
-      date: form.date,
-      eggType: form.eggType,
-      quantity: Number(form.quantity)
+    if (!form.henBatchId || !form.quantity) return;
+
+    setSaving(true);
+    try {
+      if (editing) {
+        await updateProduction(editing.id, {
+          henBatchId: form.henBatchId,
+          date: form.date,
+          eggType: form.eggType,
+          quantity: Number(form.quantity)
+        });
+        showSnack("Registro actualizado.");
+      } else {
+        await registerProduction({
+          henBatchId: form.henBatchId,
+          date: form.date,
+          eggType: form.eggType,
+          quantity: Number(form.quantity)
+        });
+        showSnack("Registro creado.");
+      }
+      resetForm();
+      await load();
+    } catch (err) {
+      const msg = err?.response?.data || "Error guardando registro.";
+      showSnack(msg, "error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleEdit = (p) => {
+    setEditing(p);
+    setForm({
+      henBatchId: p.henBatchId,
+      date: p.date?.substring(0, 10) || today,
+      eggType: p.eggType,
+      quantity: p.quantity.toString()
     });
-    setForm(f => ({ ...f, quantity: "" }));
-    const p = await getProductions({});
-    setProductions(p.data);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteProduction(confirmDelete.id);
+      showSnack("Registro eliminado.");
+      setConfirmDelete({ open: false, id: null });
+      await load();
+    } catch (err) {
+      const msg = err?.response?.data || "Error eliminando registro.";
+      showSnack(msg, "error");
+    }
   };
 
   return (
@@ -47,7 +114,9 @@ export const ProductionPage = () => {
       <Grid item xs={12} md={4}>
         <Card>
           <CardContent>
-            <Typography variant="h6" gutterBottom>Registrar postura diaria</Typography>
+            <Typography variant="h6" gutterBottom>
+              {editing ? "Editar registro" : "Registrar postura diaria"}
+            </Typography>
             <Stack spacing={2} component="form" onSubmit={handleSubmit}>
               <TextField select label="Camada" name="henBatchId" value={form.henBatchId}
                 onChange={handleChange} fullWidth required>
@@ -58,7 +127,9 @@ export const ProductionPage = () => {
 
               <TextField label="Fecha" type="date" name="date"
                 value={form.date} onChange={handleChange} fullWidth
-                InputLabelProps={{ shrink: true }} />
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ max: today }}
+              />
 
               <TextField select label="Tipo de huevo" name="eggType"
                 value={form.eggType} onChange={handleChange} fullWidth>
@@ -68,9 +139,18 @@ export const ProductionPage = () => {
               </TextField>
 
               <TextField label="Cantidad" type="number" name="quantity"
-                value={form.quantity} onChange={handleChange} fullWidth required />
+                value={form.quantity} onChange={handleChange} fullWidth required
+                inputProps={{ min: 1 }}
+              />
 
-              <Button type="submit" variant="contained">Guardar</Button>
+              <Stack direction="row" spacing={1}>
+                <Button type="submit" variant="contained" disabled={saving}>
+                  {saving ? "Guardando..." : editing ? "Actualizar" : "Guardar"}
+                </Button>
+                {editing && (
+                  <Button onClick={resetForm}>Cancelar</Button>
+                )}
+              </Stack>
             </Stack>
           </CardContent>
         </Card>
@@ -80,41 +160,78 @@ export const ProductionPage = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>Últimos registros</Typography>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Fecha</TableCell>
-                  <TableCell>Camada</TableCell>
-                  <TableCell>Tipo</TableCell>
-                  <TableCell align="right">Cantidad</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {productions.map(p => {
-                  const batch = batches.find(b => b.id === p.henBatchId);
-                  return (
-                    <TableRow key={p.id}>
-                      <TableCell>{new Date(p.date).toLocaleDateString()}</TableCell>
-                      <TableCell>{batch ? batch.name : "-"}</TableCell>
-                      <TableCell>{p.eggType}</TableCell>
-                      <TableCell align="right">{p.quantity}</TableCell>
-                    </TableRow>
-                  );
-                })}
-                {productions.length === 0 && (
+            {loading ? (
+              <Stack alignItems="center" py={4}>
+                <CircularProgress />
+              </Stack>
+            ) : (
+              <Table size="small">
+                <TableHead>
                   <TableRow>
-                    <TableCell colSpan={4}>
-                      <Typography variant="body2" color="text.secondary">
-                        Aún no hay registros.
-                      </Typography>
-                    </TableCell>
+                    <TableCell>Fecha</TableCell>
+                    <TableCell>Camada</TableCell>
+                    <TableCell>Tipo</TableCell>
+                    <TableCell align="right">Cantidad</TableCell>
+                    <TableCell align="right">Acciones</TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {productions.map(p => {
+                    const batch = batches.find(b => b.id === p.henBatchId);
+                    return (
+                      <TableRow key={p.id}>
+                        <TableCell>{new Date(p.date).toLocaleDateString()}</TableCell>
+                        <TableCell>{batch ? batch.name : "-"}</TableCell>
+                        <TableCell>{p.eggType}</TableCell>
+                        <TableCell align="right">{p.quantity}</TableCell>
+                        <TableCell align="right">
+                          <IconButton size="small" onClick={() => handleEdit(p)}>
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                          <IconButton size="small" color="error"
+                            onClick={() => setConfirmDelete({ open: true, id: p.id })}>
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {productions.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5}>
+                        <Typography variant="body2" color="text.secondary">
+                          Aún no hay registros.
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            )}
           </CardContent>
         </Card>
       </Grid>
+
+      <Dialog open={confirmDelete.open} onClose={() => setConfirmDelete({ open: false, id: null })}>
+        <DialogTitle>Eliminar registro</DialogTitle>
+        <DialogContent>
+          <Typography>¿Seguro que deseas eliminar este registro de producción?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDelete({ open: false, id: null })}>Cancelar</Button>
+          <Button onClick={handleDelete} color="error" variant="contained">Eliminar</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={3000}
+        onClose={() => setSnack(s => ({ ...s, open: false }))}
+      >
+        <Alert severity={snack.severity} sx={{ width: "100%" }}>
+          {snack.msg}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };

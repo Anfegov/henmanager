@@ -43,4 +43,37 @@ public class SupplyController : ControllerBase
         await _db.Supplies.InsertOneAsync(request);
         return Ok(request);
     }
+
+    [HttpPut("{id:guid}")]
+    [Authorize(Policy = "RegisterSupply")]
+    public async Task<ActionResult<Supply>> Update(Guid id, Supply request)
+    {
+        var supply = await _db.Supplies.Find(s => s.Id == id).FirstOrDefaultAsync();
+        if (supply is null) return NotFound("Insumo no encontrado.");
+
+        if (request.HenBatchId != Guid.Empty && request.HenBatchId != supply.HenBatchId)
+        {
+            var batch = await _db.HenBatches.Find(b => b.Id == request.HenBatchId).FirstOrDefaultAsync();
+            if (batch is null) return BadRequest("Camada no existe.");
+            supply.HenBatchId = request.HenBatchId;
+        }
+
+        supply.Name = !string.IsNullOrWhiteSpace(request.Name) ? request.Name.Trim() : supply.Name;
+        supply.Quantity = request.Quantity > 0 ? request.Quantity : supply.Quantity;
+        supply.Unit = !string.IsNullOrWhiteSpace(request.Unit) ? request.Unit.Trim() : supply.Unit;
+        supply.Cost = request.Cost ?? supply.Cost;
+        supply.Date = request.Date != default ? request.Date.Date : supply.Date;
+
+        await _db.Supplies.ReplaceOneAsync(s => s.Id == id, supply);
+        return Ok(supply);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "RegisterSupply")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _db.Supplies.DeleteOneAsync(s => s.Id == id);
+        if (result.DeletedCount == 0) return NotFound("Insumo no encontrado.");
+        return Ok(new { message = "Insumo eliminado correctamente." });
+    }
 }

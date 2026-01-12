@@ -13,7 +13,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Chip
+  Chip,
+  Snackbar,
+  Alert
 } from "@mui/material";
 
 import { getBatches } from "../api/batchesApi";
@@ -28,18 +30,24 @@ const paymentTypes = [
   { value: "Credito", label: "Crédito" }
 ];
 
+const today = new Date().toISOString().substring(0, 10);
+
 export const SalesPage = () => {
   const [batches, setBatches] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [sales, setSales] = useState([]);
   const [stockByType, setStockByType] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [snack, setSnack] = useState({ open: false, msg: "", severity: "success" });
+
+  const showSnack = (msg, severity = "success") =>
+    setSnack({ open: true, msg, severity });
 
   const [form, setForm] = useState({
     henBatchId: "",
     customerId: "",
     eggType: "Mediano",
-    date: new Date().toISOString().substring(0, 10),
+    date: today,
     quantity: "",
     unitPrice: "",
     paymentType: "Contado"
@@ -94,13 +102,15 @@ export const SalesPage = () => {
     setSaving(true);
     try {
       await salesApi.register(payload);
+      showSnack("Venta registrada.");
       setForm(f => ({ ...f, quantity: "", unitPrice: "" }));
       await load();
       // refresh stock after sell
       const res = await axiosClient.get("/stock", { params: { henBatchId: form.henBatchId }});
       setStockByType(res.data);
     } catch (err) {
-      alert(err?.response?.data || "Error registrando venta");
+      const msg = err?.response?.data || "Error registrando venta.";
+      showSnack(msg, "error");
     } finally {
       setSaving(false);
     }
@@ -163,6 +173,7 @@ export const SalesPage = () => {
                 value={form.date}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
                 InputLabelProps={{ shrink: true }}
+                inputProps={{ max: today }}
                 required
               />
 
@@ -260,6 +271,16 @@ export const SalesPage = () => {
           </CardContent>
         </Card>
       </Grid>
+
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={3000}
+        onClose={() => setSnack(s => ({ ...s, open: false }))}
+      >
+        <Alert severity={snack.severity} sx={{ width: "100%" }}>
+          {snack.msg}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };

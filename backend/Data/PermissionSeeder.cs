@@ -31,6 +31,7 @@ public static class PermissionSeeder
             new() { Id = Guid.NewGuid(), Code="ManageUsers", Name="Administrar usuarios" },
             new() { Id = Guid.NewGuid(), Code="ManageRoles", Name="Administrar roles" },
             new() { Id = Guid.NewGuid(), Code="ManageCustomers", Name="Administrar clientes" },
+            new() { Id = Guid.NewGuid(), Code="ViewCustomers", Name="Ver clientes" },
             new() { Id = Guid.NewGuid(), Code="ManageEggTypes", Name="Administrar tipos de huevo" },
         };
 

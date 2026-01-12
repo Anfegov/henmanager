@@ -96,13 +96,27 @@ export function Layout({ children }) {
             Control de postura por camada
           </Typography>
           {user && (
-            <>
-              <Typography variant="body2" sx={{ mr: 2 }}>
-                {user.userName} ({(user.roles || []).join(", ")})
-              </Typography>
-              <Button color="inherit" onClick={logout}>Salir</Button>
-            </>
-          )}
+  <>
+    <Typography variant="body2" sx={{ mr: 2 }}>
+      {user.userName} (
+        {(() => {
+          const roles = user.roles || [];
+          const rolesText = roles
+            .map(r => {
+              if (typeof r === "string") return r;
+              // intenta tomar la propiedad más típica
+              return r.name || r.roleName || "";
+            })
+            .filter(Boolean)
+            .join(", ");
+
+          return rolesText || "sin rol";
+        })()}
+      )
+    </Typography>
+    <Button color="inherit" onClick={logout}>Salir</Button>
+  </>
+)}
         </Toolbar>
       </AppBar>
 

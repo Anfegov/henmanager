@@ -57,6 +57,8 @@ public class HenBatchController : ControllerBase
 
         batch.Name = request.Name?.Trim() ?? batch.Name;
         batch.StartDate = request.StartDate == default ? batch.StartDate : request.StartDate.Date;
+        batch.HensCount = request.HensCount > 0 ? request.HensCount : batch.HensCount;
+        batch.Notes = request.Notes ?? batch.Notes;
 
         await _db.HenBatches.ReplaceOneAsync(b => b.Id == id, batch);
         return Ok(batch);

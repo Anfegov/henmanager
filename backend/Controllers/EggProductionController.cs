@@ -16,6 +16,7 @@ public class EggProductionController : ControllerBase
     public EggProductionController(MongoDbContext db) => _db = db;
 
     [HttpGet]
+    [Authorize(Policy = "ViewProduction")]
     public async Task<ActionResult<IEnumerable<EggProduction>>> GetAll([FromQuery] Guid? henBatchId, [FromQuery] DateTime? from, [FromQuery] DateTime? to)
     {
         var filter = Builders<EggProduction>.Filter.Empty;
@@ -34,6 +35,7 @@ public class EggProductionController : ControllerBase
     }
 
     [HttpPost("RegisterDailyProduction")]
+    [Authorize(Policy = "RegisterDailyProduction")]
     public async Task<ActionResult<EggProduction>> RegisterDailyProduction([FromBody] EggProduction request)
     {
         if (request.Quantity <= 0) return BadRequest("Cantidad inválida.");
@@ -49,6 +51,41 @@ public class EggProductionController : ControllerBase
 
         await _db.EggProductions.InsertOneAsync(request);
         return Ok(request);
+    }
+
+    [HttpPut("{id:guid}")]
+    [Authorize(Policy = "RegisterDailyProduction")]
+    public async Task<ActionResult<EggProduction>> Update(Guid id, [FromBody] EggProduction request)
+    {
+        var production = await _db.EggProductions.Find(p => p.Id == id).FirstOrDefaultAsync();
+        if (production is null) return NotFound("Registro no encontrado.");
+
+        if (request.HenBatchId != Guid.Empty && request.HenBatchId != production.HenBatchId)
+        {
+            var batch = await _db.HenBatches.Find(b => b.Id == request.HenBatchId).FirstOrDefaultAsync();
+            if (batch is null) return BadRequest("Camada no existe.");
+            production.HenBatchId = request.HenBatchId;
+        }
+
+        if (request.Quantity > 0)
+            production.Quantity = request.Quantity;
+
+        if (request.Date != default)
+            production.Date = request.Date.Date;
+
+        production.EggType = request.EggType;
+
+        await _db.EggProductions.ReplaceOneAsync(p => p.Id == id, production);
+        return Ok(production);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "RegisterDailyProduction")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _db.EggProductions.DeleteOneAsync(p => p.Id == id);
+        if (result.DeletedCount == 0) return NotFound("Registro no encontrado.");
+        return Ok(new { message = "Registro eliminado correctamente." });
     }
 
     private Guid GetUserId()

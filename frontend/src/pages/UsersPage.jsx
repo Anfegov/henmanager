@@ -2,12 +2,22 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Grid, Card, CardContent, Typography, TextField, Button, Stack,
   Table, TableHead, TableRow, TableCell, TableBody, IconButton, Dialog,
-  DialogTitle, DialogContent, DialogActions, MenuItem, Checkbox, ListItemText
+  DialogTitle, DialogContent, DialogActions, MenuItem, Checkbox, ListItemText,
+  Snackbar, Alert
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { getRoles } from "../api/rolesApi";
 import { createUser, deleteUser, getUsers, updateUser } from "../api/usersApi";
+
+const validatePassword = (password) => {
+  if (password.length < 8) return "La contraseña debe tener al menos 8 caracteres.";
+  if (!/[A-Z]/.test(password)) return "La contraseña debe tener al menos una mayúscula.";
+  if (!/[a-z]/.test(password)) return "La contraseña debe tener al menos una minúscula.";
+  if (!/[0-9]/.test(password)) return "La contraseña debe tener al menos un número.";
+  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) return "La contraseña debe tener al menos un carácter especial.";
+  return null;
+};
 
 export const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -15,6 +25,11 @@ export const UsersPage = () => {
 
   const [editing, setEditing] = useState(null);
   const [confirm, setConfirm] = useState({ open:false, id:null });
+  const [snack, setSnack] = useState({ open: false, msg: "", severity: "success" });
+  const [passwordError, setPasswordError] = useState(null);
+
+  const showSnack = (msg, severity = "success") =>
+    setSnack({ open: true, msg, severity });
 
   const [form, setForm] = useState({
     userName: "",
@@ -55,22 +70,42 @@ export const UsersPage = () => {
     e.preventDefault();
     if (!form.userName.trim()) return;
 
-    if (editing) {
-      await updateUser(editing.id, {
-        userName: form.userName,
-        isActive: form.isActive,
-        roleIds: form.roleIds
-      });
-    } else {
-      await createUser({
-        userName: form.userName,
-        password: form.password || "User123*",
-        roleIds: form.roleIds
-      });
+    if (!editing) {
+      if (!form.password) {
+        showSnack("La contraseña es obligatoria.", "warning");
+        return;
+      }
+      const pwdError = validatePassword(form.password);
+      if (pwdError) {
+        setPasswordError(pwdError);
+        showSnack(pwdError, "warning");
+        return;
+      }
     }
 
-    await load();
-    resetForm();
+    try {
+      if (editing) {
+        await updateUser(editing.id, {
+          userName: form.userName,
+          isActive: form.isActive,
+          roleIds: form.roleIds
+        });
+        showSnack("Usuario actualizado.");
+      } else {
+        await createUser({
+          userName: form.userName,
+          password: form.password,
+          roleIds: form.roleIds
+        });
+        showSnack("Usuario creado.");
+      }
+
+      await load();
+      resetForm();
+    } catch (err) {
+      const msg = err?.response?.data || "Error guardando usuario.";
+      showSnack(msg, "error");
+    }
   };
 
   const doDelete = async () => {
@@ -103,10 +138,15 @@ export const UsersPage = () => {
                   label="Contraseña"
                   type="password"
                   value={form.password}
-                  onChange={(e)=>setForm(f=>({...f,password:e.target.value}))}
+                  onChange={(e) => {
+                    setForm(f => ({ ...f, password: e.target.value }));
+                    setPasswordError(null);
+                  }}
                   fullWidth
                   margin="normal"
-                  helperText="Si la dejas vacía se usa User123*"
+                  required
+                  error={!!passwordError}
+                  helperText={passwordError || "Mín. 8 caracteres, mayúscula, minúscula, número y especial"}
                 />
               )}
 
@@ -210,6 +250,16 @@ export const UsersPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={3000}
+        onClose={() => setSnack(s => ({ ...s, open: false }))}
+      >
+        <Alert severity={snack.severity} sx={{ width: "100%" }}>
+          {snack.msg}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };
