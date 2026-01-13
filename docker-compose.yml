@@ -3,6 +3,8 @@ services:
     image: mongo:7
     container_name: henmanager-mongo
     restart: always
+    ports:
+      - "37017:27017"  # Puerto externo 37017 para evitar conflicto con mongo local
     volumes:
       - mongo_data:/data/db
 

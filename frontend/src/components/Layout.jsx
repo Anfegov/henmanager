@@ -28,36 +28,65 @@ export function Layout({ children }) {
   const handleDrawerToggle = () => setMobileOpen((p) => !p);
 
   const menuItems = React.useMemo(() => {
-    const common = [
-      { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
-      { text: "Camadas", icon: <LayersIcon />, path: "/batches" },
-      { text: "Postura diaria", icon: <EggIcon />, path: "/production" },
-      { text: "Ventas", icon: <ShoppingCartIcon />, path: "/sales" },
-      { text: "Insumos", icon: <InventoryIcon />, path: "/supplies" },
-      { text: "Reportes", icon: <AssessmentIcon />, path: "/reports" },
-      { text: "Cartera / Créditos", icon: <PaidIcon />, path: "/credits" }
-    ];
+    const items = [];
 
-    // Clientes: visible a quien tenga permiso ManageCustomers (Admin lo tiene)
-    if (hasPermission?.("ManageCustomers")) {
-      common.splice(4, 0, { text: "Clientes", icon: <GroupIcon />, path: "/customers" });
-      // inserta antes de Ventas/insumos para mantener orden natural
+    // Dashboard: visible si tiene ViewDashboard
+    if (hasPermission?.("ViewDashboard")) {
+      items.push({ text: "Dashboard", icon: <DashboardIcon />, path: "/" });
     }
 
-    // Opciones solo Admin (como tu premisa)
-    if (hasRole?.("Admin")) {
-      common.push(
-        { text: "Usuarios", icon: <GroupIcon />, path: "/users" },
-        { text: "Roles / Permisos", icon: <SecurityIcon />, path: "/roles" }
-      );
-      // Catálogo de tipos de huevo solo Admin
-      if (hasPermission?.("ManageEggTypes")) {
-        common.push({ text: "Tipos de huevo", icon: <CategoryIcon />, path: "/egg-types" });
-      }
+    // Camadas: visible si tiene ViewBatches
+    if (hasPermission?.("ViewBatches")) {
+      items.push({ text: "Camadas", icon: <LayersIcon />, path: "/batches" });
     }
 
-    return common;
-  }, [hasRole, hasPermission]);
+    // Producción: visible si tiene ViewProduction
+    if (hasPermission?.("ViewProduction")) {
+      items.push({ text: "Postura diaria", icon: <EggIcon />, path: "/production" });
+    }
+
+    // Clientes: visible si tiene ViewCustomers
+    if (hasPermission?.("ViewCustomers")) {
+      items.push({ text: "Clientes", icon: <GroupIcon />, path: "/customers" });
+    }
+
+    // Ventas: visible si tiene ViewSales
+    if (hasPermission?.("ViewSales")) {
+      items.push({ text: "Ventas", icon: <ShoppingCartIcon />, path: "/sales" });
+    }
+
+    // Insumos: visible si tiene ViewSupplies
+    if (hasPermission?.("ViewSupplies")) {
+      items.push({ text: "Insumos", icon: <InventoryIcon />, path: "/supplies" });
+    }
+
+    // Créditos: visible si tiene ViewCredits
+    if (hasPermission?.("ViewCredits")) {
+      items.push({ text: "Cartera / Créditos", icon: <PaidIcon />, path: "/credits" });
+    }
+
+    // Reportes: visible si tiene ViewReports
+    if (hasPermission?.("ViewReports")) {
+      items.push({ text: "Reportes", icon: <AssessmentIcon />, path: "/reports" });
+    }
+
+    // Tipos de huevo: visible si tiene ViewEggTypes
+    if (hasPermission?.("ViewEggTypes")) {
+      items.push({ text: "Tipos de huevo", icon: <CategoryIcon />, path: "/egg-types" });
+    }
+
+    // Usuarios: visible si tiene ViewUsers
+    if (hasPermission?.("ViewUsers")) {
+      items.push({ text: "Usuarios", icon: <GroupIcon />, path: "/users" });
+    }
+
+    // Roles: visible si tiene ViewRoles
+    if (hasPermission?.("ViewRoles")) {
+      items.push({ text: "Roles / Permisos", icon: <SecurityIcon />, path: "/roles" });
+    }
+
+    return items;
+  }, [hasPermission]);
 
   const drawer = (
     <div>

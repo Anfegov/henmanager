@@ -23,17 +23,58 @@ public class SaleController : ControllerBase
     private readonly MongoDbContext _db;
     public SaleController(MongoDbContext db) => _db = db;
 
+    public class SaleDto
+    {
+        public Guid Id { get; set; }
+        public Guid HenBatchId { get; set; }
+        public Guid CustomerId { get; set; }
+        public DateTime Date { get; set; }
+        public string? EggType { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal Total { get; set; }
+        public string PaymentType { get; set; } = "";
+        public string CreditStatus { get; set; } = "";
+        public decimal AmountPaid { get; set; }
+        public decimal PendingAmount { get; set; }
+        public Guid SoldById { get; set; }
+        public string SoldByName { get; set; } = "";
+    }
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Sale>>> GetAll()
+    public async Task<ActionResult<IEnumerable<SaleDto>>> GetAll()
     {
         var list = await _db.Sales.Find(_ => true)
             .SortByDescending(s => s.Date)
             .ToListAsync();
-        return Ok(list);
+
+        var userIds = list.Select(s => s.SoldById).Distinct().ToList();
+        var users = await _db.Users.Find(u => userIds.Contains(u.Id)).ToListAsync();
+        var userMap = users.ToDictionary(u => u.Id, u => u.UserName);
+
+        var result = list.Select(s => new SaleDto
+        {
+            Id = s.Id,
+            HenBatchId = s.HenBatchId,
+            CustomerId = s.CustomerId,
+            Date = s.Date,
+            EggType = s.EggType?.ToString(),
+            Quantity = s.Quantity,
+            UnitPrice = s.UnitPrice,
+            Total = s.Total,
+            PaymentType = s.PaymentType.ToString(),
+            CreditStatus = s.CreditStatus.ToString(),
+            AmountPaid = s.AmountPaid,
+            PendingAmount = s.PendingAmount,
+            SoldById = s.SoldById,
+            SoldByName = userMap.TryGetValue(s.SoldById, out var name) ? name : "Usuario"
+        }).ToList();
+
+        return Ok(result);
     }
 
     [HttpPost]
-    [Authorize(Policy = "RegisterSale")]
+    [Authorize(Policy = "CreateSale")]
     public async Task<ActionResult<Sale>> RegisterSale(RegisterSaleRequest request)
     {
         var batch = await _db.HenBatches.Find(b => b.Id == request.HenBatchId).FirstOrDefaultAsync();
@@ -106,10 +147,10 @@ public class SaleController : ControllerBase
             return NotFound("La venta no existe.");
 
         if (sale.PaymentType != PaymentType.Credito)
-            return BadRequest("Solo las ventas a crédito permiten abonos.");
+            return BadRequest("Solo las ventas a crï¿½dito permiten abonos.");
 
         if (sale.PendingAmount <= 0)
-            return BadRequest("La deuda ya está cancelada.");
+            return BadRequest("La deuda ya estï¿½ cancelada.");
 
         if (request.Amount > sale.PendingAmount)
             return BadRequest("El abono no puede ser mayor al saldo pendiente.");
@@ -118,7 +159,7 @@ public class SaleController : ControllerBase
         sale.AmountPaid += request.Amount;
         sale.PendingAmount -= request.Amount;
 
-        // actualizar estado según tu enum actual
+        // actualizar estado segï¿½n tu enum actual
         if (sale.PendingAmount == 0)
         {
             sale.CreditStatus = CreditStatus.Cancelado;

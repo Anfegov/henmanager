@@ -12,7 +12,7 @@ public record UpdateUserRequest(string UserName, bool IsActive, List<Guid> RoleI
 
 [ApiController]
 [Route("api/users")]
-[Authorize(Policy = "ManageUsers")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IMongoDbContext _db;
@@ -25,6 +25,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = "ViewUsers")]
     public async Task<ActionResult<IEnumerable<User>>> GetAll()
     {
         var list = await _db.Users.Find(_ => true)
@@ -34,6 +35,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Policy = "ViewUsers")]
     public async Task<ActionResult<User>> GetById(Guid id)
     {
         var user = await _db.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
@@ -42,6 +44,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "CreateUser")]
     public async Task<ActionResult<User>> Create(CreateUserRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
@@ -74,6 +77,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Policy = "EditUser")]
     public async Task<ActionResult<User>> Update(Guid id, UpdateUserRequest request)
     {
         var user = await _db.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
@@ -103,6 +107,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "DeleteUser")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _db.Users.DeleteOneAsync(u => u.Id == id);

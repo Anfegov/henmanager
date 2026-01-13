@@ -8,7 +8,7 @@ namespace HenManager.Api.Controllers;
 
 [ApiController]
 [Route("api/credits")]
-[Authorize(Policy = "ViewSales")]
+[Authorize(Policy = "ViewCredits")]
 public class CreditController : ControllerBase
 {
     private readonly MongoDbContext _db;
@@ -34,11 +34,13 @@ public class CreditController : ControllerBase
         return Ok(list);
     }
 
+    public record PaymentRequest(decimal Amount);
+
     [HttpPut("{id:guid}/pay")]
     [Authorize(Policy = "RegisterPayment")]
-    public async Task<ActionResult<Sale>> RegisterPayment(Guid id, [FromBody] decimal amount)
+    public async Task<ActionResult<Sale>> RegisterPayment(Guid id, [FromBody] PaymentRequest request)
     {
-        if (amount <= 0) return BadRequest("El abono debe ser mayor a 0.");
+        if (request.Amount <= 0) return BadRequest("El abono debe ser mayor a 0.");
 
         var sale = await _db.Sales.Find(s => s.Id == id).FirstOrDefaultAsync();
         if (sale is null) return NotFound();
@@ -46,7 +48,22 @@ public class CreditController : ControllerBase
         if (sale.CreditStatus == CreditStatus.Cancelado)
             return BadRequest("El crédito ya está cancelado.");
 
-        sale.AmountPaid += amount;
+        // Obtener el usuario actual
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        Guid.TryParse(userIdClaim, out var userId);
+
+        // Guardar el registro del pago en historial
+        var payment = new Payment
+        {
+            Id = Guid.NewGuid(),
+            SaleId = id,
+            Amount = request.Amount,
+            PaidAt = DateTime.UtcNow,
+            PaidById = userId
+        };
+        await _db.Payments.InsertOneAsync(payment);
+
+        sale.AmountPaid += request.Amount;
         sale.PendingAmount = sale.Total - sale.AmountPaid;
 
         if (sale.PendingAmount <= 0)
@@ -58,6 +75,43 @@ public class CreditController : ControllerBase
 
         await _db.Sales.ReplaceOneAsync(s => s.Id == id, sale);
         return Ok(sale);
+    }
+
+    public class PaymentHistoryDto
+    {
+        public Guid Id { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime PaidAt { get; set; }
+        public string PaidByName { get; set; } = "";
+    }
+
+    [HttpGet("{id:guid}/payments")]
+    public async Task<ActionResult<IEnumerable<PaymentHistoryDto>>> GetPaymentHistory(Guid id)
+    {
+        var sale = await _db.Sales.Find(s => s.Id == id).FirstOrDefaultAsync();
+        if (sale is null) return NotFound();
+
+        var payments = await _db.Payments
+            .Find(p => p.SaleId == id)
+            .SortByDescending(p => p.PaidAt)
+            .ToListAsync();
+
+        if (!payments.Any())
+            return Ok(new List<PaymentHistoryDto>());
+
+        var userIds = payments.Select(p => p.PaidById).Distinct().ToList();
+        var users = await _db.Users.Find(u => userIds.Contains(u.Id)).ToListAsync();
+        var userMap = users.ToDictionary(u => u.Id, u => u.UserName);
+
+        var result = payments.Select(p => new PaymentHistoryDto
+        {
+            Id = p.Id,
+            Amount = p.Amount,
+            PaidAt = p.PaidAt,
+            PaidByName = userMap.TryGetValue(p.PaidById, out var name) ? name : "Usuario"
+        }).ToList();
+
+        return Ok(result);
     }
 
     [HttpPut("{id:guid}/cancel")]

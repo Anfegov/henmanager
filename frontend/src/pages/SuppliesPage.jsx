@@ -8,10 +8,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { getBatches } from "../api/batchesApi";
 import { getSupplies, registerSupply, updateSupply, deleteSupply } from "../api/suppliesApi";
+import { useAuth } from "../auth/useAuth";
 
 const today = new Date().toISOString().substring(0, 10);
 
 export const SuppliesPage = () => {
+  const { hasPermission } = useAuth();
+  const canCreate = hasPermission("CreateSupply");
+  const canEdit = hasPermission("EditSupply");
+  const canDelete = hasPermission("DeleteSupply");
+
   const [batches, setBatches] = useState([]);
   const [supplies, setSupplies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -113,56 +119,58 @@ export const SuppliesPage = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              {editing ? "Editar insumo" : "Registrar insumo"}
-            </Typography>
-            <Stack spacing={2} component="form" onSubmit={handleSubmit}>
-              <TextField select label="Camada" name="henBatchId"
-                value={form.henBatchId} onChange={handleChange} fullWidth required>
-                {batches.map(b => (
-                  <MenuItem key={b.id} value={b.id}>{b.name}</MenuItem>
-                ))}
-              </TextField>
+      {(canCreate || editing) && (
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                {editing ? "Editar insumo" : "Registrar insumo"}
+              </Typography>
+              <Stack spacing={2} component="form" onSubmit={handleSubmit}>
+                <TextField select label="Camada" name="henBatchId"
+                  value={form.henBatchId} onChange={handleChange} fullWidth required>
+                  {batches.map(b => (
+                    <MenuItem key={b.id} value={b.id}>{b.name}</MenuItem>
+                  ))}
+                </TextField>
 
-              <TextField label="Fecha" type="date" name="date"
-                value={form.date} onChange={handleChange} fullWidth
-                InputLabelProps={{ shrink: true }}
-                inputProps={{ max: today }}
-              />
+                <TextField label="Fecha" type="date" name="date"
+                  value={form.date} onChange={handleChange} fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  inputProps={{ max: today }}
+                />
 
-              <TextField label="Insumo" name="name"
-                value={form.name} onChange={handleChange} fullWidth required />
+                <TextField label="Insumo" name="name"
+                  value={form.name} onChange={handleChange} fullWidth required />
 
-              <TextField label="Cantidad" type="number" name="quantity"
-                value={form.quantity} onChange={handleChange} fullWidth required
-                inputProps={{ min: 0.01, step: "0.01" }}
-              />
+                <TextField label="Cantidad" type="number" name="quantity"
+                  value={form.quantity} onChange={handleChange} fullWidth required
+                  inputProps={{ min: 0.01, step: "0.01" }}
+                />
 
-              <TextField label="Unidad" name="unit"
-                value={form.unit} onChange={handleChange} fullWidth />
+                <TextField label="Unidad" name="unit"
+                  value={form.unit} onChange={handleChange} fullWidth />
 
-              <TextField label="Costo" type="number" name="cost"
-                value={form.cost} onChange={handleChange} fullWidth
-                inputProps={{ min: 0, step: "0.01" }}
-              />
+                <TextField label="Costo" type="number" name="cost"
+                  value={form.cost} onChange={handleChange} fullWidth
+                  inputProps={{ min: 0, step: "0.01" }}
+                />
 
-              <Stack direction="row" spacing={1}>
-                <Button type="submit" variant="contained" disabled={saving}>
-                  {saving ? "Guardando..." : editing ? "Actualizar" : "Guardar"}
-                </Button>
-                {editing && (
-                  <Button onClick={resetForm}>Cancelar</Button>
-                )}
+                <Stack direction="row" spacing={1}>
+                  <Button type="submit" variant="contained" disabled={saving}>
+                    {saving ? "Guardando..." : editing ? "Actualizar" : "Guardar"}
+                  </Button>
+                  {editing && (
+                    <Button onClick={resetForm}>Cancelar</Button>
+                  )}
+                </Stack>
               </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+      )}
 
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={(canCreate || editing) ? 8 : 12}>
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>Últimos insumos</Typography>
@@ -193,11 +201,21 @@ export const SuppliesPage = () => {
                         <TableCell align="right">{s.quantity} {s.unit}</TableCell>
                         <TableCell align="right">${Number(s.cost || 0).toFixed(2)}</TableCell>
                         <TableCell align="right">
-                          <IconButton size="small" onClick={() => handleEdit(s)}>
+                          <IconButton
+                            size="small"
+                            onClick={() => handleEdit(s)}
+                            disabled={!canEdit}
+                            title={canEdit ? "Editar" : "Sin permiso para editar"}
+                          >
                             <EditIcon fontSize="small" />
                           </IconButton>
-                          <IconButton size="small" color="error"
-                            onClick={() => setConfirmDelete({ open: true, id: s.id })}>
+                          <IconButton
+                            size="small"
+                            color="error"
+                            onClick={() => setConfirmDelete({ open: true, id: s.id })}
+                            disabled={!canDelete}
+                            title={canDelete ? "Eliminar" : "Sin permiso para eliminar"}
+                          >
                             <DeleteIcon fontSize="small" />
                           </IconButton>
                         </TableCell>

@@ -10,13 +10,14 @@ public record RoleRequest(string Name, List<Guid> PermissionIds);
 
 [ApiController]
 [Route("api/roles")]
-[Authorize(Policy = "ManageRoles")]
+[Authorize]
 public class RoleController : ControllerBase
 {
     private readonly MongoDbContext _db;
     public RoleController(MongoDbContext db) => _db = db;
 
     [HttpGet]
+    [Authorize(Policy = "ViewRoles")]
     public async Task<ActionResult<IEnumerable<Role>>> GetAll()
     {
         var list = await _db.Roles.Find(_ => true)
@@ -26,6 +27,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Policy = "ViewRoles")]
     public async Task<ActionResult<Role>> GetById(Guid id)
     {
         var role = await _db.Roles.Find(r => r.Id == id).FirstOrDefaultAsync();
@@ -34,6 +36,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpGet("permissions")]
+    [Authorize(Policy = "ViewRoles")]
     public async Task<ActionResult<IEnumerable<PermissionEntity>>> GetPermissions()
     {
         var list = await _db.Permissions.Find(_ => true)
@@ -43,6 +46,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "CreateRole")]
     public async Task<ActionResult<Role>> Create(RoleRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Name))
@@ -68,6 +72,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Policy = "EditRole")]
     public async Task<ActionResult<Role>> Update(Guid id, RoleRequest request)
     {
         var role = await _db.Roles.Find(r => r.Id == id).FirstOrDefaultAsync();
@@ -89,6 +94,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "DeleteRole")]
     public async Task<ActionResult> Delete(Guid id)
     {
         var inUse = await _db.Users.Find(u => u.RoleIds.Contains(id)).AnyAsync();

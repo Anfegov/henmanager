@@ -1,7 +1,7 @@
 import axiosClient from "./axiosClient";
 
 export const paymentsApi = {
-  getBySale: async (saleId) => (await axiosClient.get(`/sales/${saleId}/payments`)).data,
-  create: async (saleId, payload) =>
-    (await axiosClient.post(`/sales/${saleId}/payments`, payload)).data,
+  getHistory: async (saleId) => (await axiosClient.get(`/credits/${saleId}/payments`)).data,
+  register: async (saleId, amount) =>
+    (await axiosClient.put(`/credits/${saleId}/pay`, { amount })).data,
 };

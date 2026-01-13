@@ -16,6 +16,7 @@ import CustomersPage from "./pages/CustomersPage";
 import CreditsPage from "./pages/CreditsPage";
 import { UsersPage } from "./pages/UsersPage";
 import { RolesPage } from "./pages/RolesPage";
+import EggTypesPage from "./pages/EggTypesPage";
 
 export default function App() {
   return (
@@ -27,7 +28,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredPermission="ViewDashboard">
               <Layout>
                 <DashboardPage />
               </Layout>
@@ -38,7 +39,7 @@ export default function App() {
         <Route
           path="/batches"
           element={
-            <ProtectedRoute requiredPermission="ViewBatch">
+            <ProtectedRoute requiredPermission="ViewBatches">
               <Layout><BatchesPage /></Layout>
             </ProtectedRoute>
           }
@@ -83,7 +84,7 @@ export default function App() {
         <Route
           path="/customers"
           element={
-            <ProtectedRoute requiredPermission="ManageCustomers">
+            <ProtectedRoute requiredPermission="ViewCustomers">
               <Layout><CustomersPage /></Layout>
             </ProtectedRoute>
           }
@@ -92,7 +93,7 @@ export default function App() {
         <Route
           path="/credits"
           element={
-            <ProtectedRoute requiredPermission="ViewSales">
+            <ProtectedRoute requiredPermission="ViewCredits">
               <Layout><CreditsPage /></Layout>
             </ProtectedRoute>
           }
@@ -101,7 +102,7 @@ export default function App() {
         <Route
           path="/users"
           element={
-            <ProtectedRoute requiredPermission="ManageUsers">
+            <ProtectedRoute requiredPermission="ViewUsers">
               <Layout><UsersPage /></Layout>
             </ProtectedRoute>
           }
@@ -110,8 +111,17 @@ export default function App() {
         <Route
           path="/roles"
           element={
-            <ProtectedRoute requiredPermission="ManageRoles">
+            <ProtectedRoute requiredPermission="ViewRoles">
               <Layout><RolesPage /></Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/egg-types"
+          element={
+            <ProtectedRoute requiredPermission="ViewEggTypes">
+              <Layout><EggTypesPage /></Layout>
             </ProtectedRoute>
           }
         />

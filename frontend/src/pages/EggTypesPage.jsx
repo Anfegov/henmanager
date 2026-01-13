@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Card,
@@ -26,45 +26,39 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import { customersApi } from "../api/customersApi";
+import { eggTypesApi } from "../api/eggTypesApi";
 import { useAuth } from "../auth/useAuth";
 
 const emptyForm = {
   id: null,
   name: "",
-  phone: "",
-  email: "",
-  address: "",
+  description: "",
+  displayOrder: 0,
   isActive: true
 };
 
-const isValidEmail = (email) => {
-  if (!email) return true; // email is optional
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
-
-export const CustomersPage = () => {
+export const EggTypesPage = () => {
   const { hasPermission } = useAuth();
-  const canCreate = hasPermission("CreateCustomer");
-  const canEdit = hasPermission("EditCustomer");
-  const canDelete = hasPermission("DeleteCustomer");
+  const canCreate = hasPermission("CreateEggType");
+  const canEdit = hasPermission("EditEggType");
+  const canDelete = hasPermission("DeleteEggType");
 
-  const [customers, setCustomers] = useState([]);
+  const [eggTypes, setEggTypes] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [snack, setSnack] = useState({ open: false, msg: "", severity: "success" });
 
-  const showSnack = (msg, severity="success") =>
+  const showSnack = (msg, severity = "success") =>
     setSnack({ open: true, msg, severity });
 
   const load = async () => {
     setLoading(true);
     try {
-      const data = await customersApi.getAll();
-      setCustomers(data ?? []);
+      const data = await eggTypesApi.getAll();
+      setEggTypes(data ?? []);
     } catch (e) {
-      showSnack("No fue posible cargar clientes.", "error");
+      showSnack("No fue posible cargar tipos de huevo.", "error");
     } finally {
       setLoading(false);
     }
@@ -72,15 +66,14 @@ export const CustomersPage = () => {
 
   useEffect(() => { load(); }, []);
 
-  const handleOpen = (customer=null) => {
+  const handleOpen = (eggType = null) => {
     if (!canCreate && !canEdit) return;
-    if (customer) setForm({
-      id: customer.id,
-      name: customer.name ?? "",
-      phone: customer.phone ?? "",
-      email: customer.email ?? "",
-      address: customer.address ?? "",
-      isActive: customer.isActive ?? true
+    if (eggType) setForm({
+      id: eggType.id,
+      name: eggType.name ?? "",
+      description: eggType.description ?? "",
+      displayOrder: eggType.displayOrder ?? 0,
+      isActive: eggType.isActive ?? true
     });
     else setForm(emptyForm);
     setOpen(true);
@@ -92,56 +85,46 @@ export const CustomersPage = () => {
       showSnack("El nombre es obligatorio.", "warning");
       return;
     }
-    if (!isValidEmail(form.email?.trim())) {
-      showSnack("El formato del email no es válido.", "warning");
-      return;
-    }
     try {
       if (form.id) {
-        await customersApi.update(form.id, {
+        await eggTypesApi.update(form.id, {
           name: form.name.trim(),
-          phone: form.phone?.trim(),
-          email: form.email?.trim(),
-          address: form.address?.trim(),
+          description: form.description?.trim() || null,
+          displayOrder: form.displayOrder,
           isActive: form.isActive
         });
-        showSnack("Cliente actualizado.");
+        showSnack("Tipo de huevo actualizado.");
       } else {
-        await customersApi.create({
+        await eggTypesApi.create({
           name: form.name.trim(),
-          phone: form.phone?.trim(),
-          email: form.email?.trim(),
-          address: form.address?.trim(),
-          isActive: form.isActive
+          description: form.description?.trim() || null,
+          displayOrder: form.displayOrder
         });
-        showSnack("Cliente creado.");
+        showSnack("Tipo de huevo creado.");
       }
       setOpen(false);
       setForm(emptyForm);
       await load();
     } catch (e) {
-      const msg = e?.response?.data?.message || e?.response?.data?.title || "Error guardando cliente.";
+      const msg = e?.response?.data?.message || e?.response?.data || "Error guardando tipo de huevo.";
       showSnack(msg, "error");
     }
   };
 
   const handleDelete = async (id) => {
     if (!canDelete) return;
-    if (!confirm("¿Eliminar cliente? Solo se permite si no tiene ventas asociadas.")) return;
+    if (!confirm("¿Desactivar este tipo de huevo?")) return;
     try {
-      await customersApi.remove(id);
-      showSnack("Cliente eliminado.");
+      await eggTypesApi.remove(id);
+      showSnack("Tipo de huevo desactivado.");
       await load();
     } catch (e) {
-      const msg = e?.response?.data?.message || e?.response?.data?.title || "No fue posible eliminar.";
+      const msg = e?.response?.data?.message || e?.response?.data || "No fue posible desactivar.";
       showSnack(msg, "error");
     }
   };
 
-  const totals = useMemo(() => ({
-    total: customers.length,
-    active: customers.filter(c => c.isActive).length
-  }), [customers]);
+  const activeCount = eggTypes.filter(e => e.isActive).length;
 
   return (
     <Grid container spacing={3}>
@@ -149,11 +132,11 @@ export const CustomersPage = () => {
         <Card>
           <CardContent sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <Typography variant="h6">Clientes</Typography>
+              <Typography variant="h6">Tipos de Huevo</Typography>
               <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                <Chip label={`Total: ${totals.total}`} />
-                <Chip color="success" label={`Activos: ${totals.active}`} />
-                <Chip label={`Inactivos: ${totals.total - totals.active}`} />
+                <Chip label={`Total: ${eggTypes.length}`} />
+                <Chip color="success" label={`Activos: ${activeCount}`} />
+                <Chip label={`Inactivos: ${eggTypes.length - activeCount}`} />
               </Stack>
             </div>
             {canCreate && (
@@ -171,23 +154,21 @@ export const CustomersPage = () => {
             <Table size="small">
               <TableHead>
                 <TableRow>
+                  <TableCell>Orden</TableCell>
                   <TableCell>Nombre</TableCell>
-                  <TableCell>Teléfono</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Dirección</TableCell>
+                  <TableCell>Descripcion</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell align="right">Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {customers.map((c) => (
-                  <TableRow key={c.id}>
-                    <TableCell>{c.name}</TableCell>
-                    <TableCell>{c.phone || "-"}</TableCell>
-                    <TableCell>{c.email || "-"}</TableCell>
-                    <TableCell>{c.address || "-"}</TableCell>
+                {eggTypes.map((e) => (
+                  <TableRow key={e.id}>
+                    <TableCell>{e.displayOrder}</TableCell>
+                    <TableCell>{e.name}</TableCell>
+                    <TableCell>{e.description || "-"}</TableCell>
                     <TableCell>
-                      {c.isActive ? (
+                      {e.isActive ? (
                         <Chip size="small" color="success" label="Activo" />
                       ) : (
                         <Chip size="small" label="Inactivo" />
@@ -196,7 +177,7 @@ export const CustomersPage = () => {
                     <TableCell align="right">
                       <IconButton
                         disabled={!canEdit}
-                        onClick={() => handleOpen(c)}
+                        onClick={() => handleOpen(e)}
                         title={canEdit ? "Editar" : "Sin permiso para editar"}
                       >
                         <EditIcon />
@@ -204,7 +185,7 @@ export const CustomersPage = () => {
                       <IconButton
                         disabled={!canDelete}
                         color="error"
-                        onClick={() => handleDelete(c.id)}
+                        onClick={() => handleDelete(e.id)}
                         title={canDelete ? "Eliminar" : "Sin permiso para eliminar"}
                       >
                         <DeleteIcon />
@@ -212,10 +193,10 @@ export const CustomersPage = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-                {customers.length === 0 && !loading && (
+                {eggTypes.length === 0 && !loading && (
                   <TableRow>
-                    <TableCell colSpan={6} align="center">
-                      No hay clientes registrados.
+                    <TableCell colSpan={5} align="center">
+                      No hay tipos de huevo registrados.
                     </TableCell>
                   </TableRow>
                 )}
@@ -226,7 +207,7 @@ export const CustomersPage = () => {
       </Grid>
 
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>{form.id ? "Editar cliente" : "Nuevo cliente"}</DialogTitle>
+        <DialogTitle>{form.id ? "Editar tipo de huevo" : "Nuevo tipo de huevo"}</DialogTitle>
         <DialogContent>
           <Stack spacing={2} sx={{ mt: 1 }}>
             <TextField
@@ -237,33 +218,30 @@ export const CustomersPage = () => {
               required
             />
             <TextField
-              label="Teléfono"
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              label="Descripcion"
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
               fullWidth
             />
             <TextField
-              label="Email"
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              label="Orden de visualizacion"
+              type="number"
+              value={form.displayOrder}
+              onChange={(e) => setForm({ ...form, displayOrder: Number(e.target.value) })}
               fullWidth
+              inputProps={{ min: 0 }}
             />
-            <TextField
-              label="Dirección"
-              value={form.address}
-              onChange={(e) => setForm({ ...form, address: e.target.value })}
-              fullWidth
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={form.isActive}
-                  onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
-                />
-              }
-              label="Activo"
-            />
+            {form.id && (
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={form.isActive}
+                    onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
+                  />
+                }
+                label="Activo"
+              />
+            )}
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -285,4 +263,4 @@ export const CustomersPage = () => {
   );
 };
 
-export default CustomersPage;
+export default EggTypesPage;

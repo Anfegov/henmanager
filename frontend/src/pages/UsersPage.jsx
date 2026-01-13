@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { getRoles } from "../api/rolesApi";
 import { createUser, deleteUser, getUsers, updateUser } from "../api/usersApi";
+import { useAuth } from "../auth/useAuth";
 
 const validatePassword = (password) => {
   if (password.length < 8) return "La contraseña debe tener al menos 8 caracteres.";
@@ -20,6 +21,11 @@ const validatePassword = (password) => {
 };
 
 export const UsersPage = () => {
+  const { hasPermission } = useAuth();
+  const canCreate = hasPermission("CreateUser");
+  const canEdit = hasPermission("EditUser");
+  const canDelete = hasPermission("DeleteUser");
+
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
 
@@ -116,12 +122,13 @@ export const UsersPage = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={5}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              {editing ? "Editar usuario" : "Crear usuario"}
-            </Typography>
+      {(canCreate || (canEdit && editing)) && (
+        <Grid item xs={12} md={5}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                {editing ? "Editar usuario" : "Crear usuario"}
+              </Typography>
 
             <form onSubmit={onSubmit}>
               <TextField
@@ -197,8 +204,9 @@ export const UsersPage = () => {
           </CardContent>
         </Card>
       </Grid>
+      )}
 
-      <Grid item xs={12} md={7}>
+      <Grid item xs={12} md={(canCreate || (canEdit && editing)) ? 7 : 12}>
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>Usuarios</Typography>
@@ -221,8 +229,21 @@ export const UsersPage = () => {
                     </TableCell>
                     <TableCell>{u.isActive ? "Activo" : "Inactivo"}</TableCell>
                     <TableCell align="right">
-                      <IconButton onClick={()=>onEdit(u)}><EditIcon /></IconButton>
-                      <IconButton color="error" onClick={()=>setConfirm({open:true,id:u.id})}><DeleteIcon /></IconButton>
+                      <IconButton
+                        onClick={()=>onEdit(u)}
+                        disabled={!canEdit}
+                        title={canEdit ? "Editar" : "Sin permiso para editar"}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        color="error"
+                        onClick={()=>setConfirm({open:true,id:u.id})}
+                        disabled={!canDelete}
+                        title={canDelete ? "Eliminar" : "Sin permiso para eliminar"}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

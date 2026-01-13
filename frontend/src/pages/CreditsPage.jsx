@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Grid, Card, CardContent, Typography, Stack, Table, TableHead, TableRow, TableCell,
   TableBody, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Button, Collapse, Box, Chip
+  TextField, Button, Collapse, Box, Chip, Snackbar, Alert, CircularProgress
 } from "@mui/material";
 import PaidIcon from "@mui/icons-material/Paid";
+import HistoryIcon from "@mui/icons-material/History";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { creditsApi } from "../api/creditsApi";
@@ -19,6 +20,13 @@ export const CreditsPage = () => {
   const [openPay, setOpenPay] = useState(false);
   const [paySale, setPaySale] = useState(null);
   const [amount, setAmount] = useState("");
+  const [snack, setSnack] = useState({ open: false, msg: "", severity: "success" });
+  const [historyDialog, setHistoryDialog] = useState({ open: false, saleId: null, saleDate: null });
+  const [paymentHistory, setPaymentHistory] = useState([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
+  const showSnack = (msg, severity = "success") =>
+    setSnack({ open: true, msg, severity });
 
   const load = async () => {
     const [s, c] = await Promise.all([
@@ -45,15 +53,30 @@ export const CreditsPage = () => {
     if (!paySale) return;
     const val = parseFloat(amount);
     if (isNaN(val) || val <= 0) {
-      alert("Monto inválido");
+      showSnack("Monto inválido", "warning");
       return;
     }
     try {
-      await paymentsApi.create(paySale.saleId, { amount: val });
+      await paymentsApi.register(paySale.saleId, val);
       setOpenPay(false);
+      showSnack("Abono registrado correctamente.");
       await load();
     } catch (e) {
-      alert(e?.response?.data || "Error registrando abono");
+      showSnack(e?.response?.data || "Error registrando abono", "error");
+    }
+  };
+
+  const openHistory = async (sale) => {
+    setHistoryDialog({ open: true, saleId: sale.saleId, saleDate: sale.date });
+    setLoadingHistory(true);
+    try {
+      const history = await paymentsApi.getHistory(sale.saleId);
+      setPaymentHistory(history);
+    } catch (e) {
+      showSnack("Error cargando historial", "error");
+      setPaymentHistory([]);
+    } finally {
+      setLoadingHistory(false);
     }
   };
 
@@ -111,7 +134,7 @@ export const CreditsPage = () => {
                                   <TableCell align="right">Pagado</TableCell>
                                   <TableCell align="right">Pendiente</TableCell>
                                   <TableCell>Estado</TableCell>
-                                  <TableCell align="right">Abono</TableCell>
+                                  <TableCell align="right">Acciones</TableCell>
                                 </TableRow>
                               </TableHead>
                               <TableBody>
@@ -123,12 +146,17 @@ export const CreditsPage = () => {
                                     <TableCell align="right">${s.pendingAmount.toFixed(2)}</TableCell>
                                     <TableCell>{s.creditStatus}</TableCell>
                                     <TableCell align="right">
-                                      {canRegisterPayment && s.pendingAmount > 0 && (
-                                        <Button size="small" startIcon={<PaidIcon/>}
-                                          onClick={() => openPayment(s)}>
-                                          Abonar
-                                        </Button>
-                                      )}
+                                      <Stack direction="row" spacing={1} justifyContent="flex-end">
+                                        <IconButton size="small" onClick={() => openHistory(s)} title="Ver historial">
+                                          <HistoryIcon fontSize="small" />
+                                        </IconButton>
+                                        {canRegisterPayment && s.pendingAmount > 0 && (
+                                          <Button size="small" startIcon={<PaidIcon/>}
+                                            onClick={() => openPayment(s)}>
+                                            Abonar
+                                          </Button>
+                                        )}
+                                      </Stack>
                                     </TableCell>
                                   </TableRow>
                                 ))}
@@ -155,7 +183,7 @@ export const CreditsPage = () => {
               Pendiente actual: ${paySale?.pendingAmount?.toFixed(2)}
             </Typography>
             <TextField label="Monto" value={amount} onChange={(e)=>setAmount(e.target.value)}
-              type="number" />
+              type="number" inputProps={{ min: 0.01, step: "0.01" }} />
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -163,6 +191,67 @@ export const CreditsPage = () => {
           <Button variant="contained" onClick={savePayment}>Guardar</Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={historyDialog.open}
+        onClose={() => setHistoryDialog({ open: false, saleId: null, saleDate: null })}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          Historial de abonos
+          {historyDialog.saleDate && (
+            <Typography variant="body2" color="text.secondary">
+              Venta del {new Date(historyDialog.saleDate).toLocaleDateString()}
+            </Typography>
+          )}
+        </DialogTitle>
+        <DialogContent>
+          {loadingHistory ? (
+            <Stack alignItems="center" py={3}>
+              <CircularProgress />
+            </Stack>
+          ) : paymentHistory.length === 0 ? (
+            <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
+              No hay abonos registrados para esta venta.
+            </Typography>
+          ) : (
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Fecha</TableCell>
+                  <TableCell align="right">Monto</TableCell>
+                  <TableCell>Registrado por</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {paymentHistory.map((p) => (
+                  <TableRow key={p.id}>
+                    <TableCell>{new Date(p.paidAt).toLocaleString()}</TableCell>
+                    <TableCell align="right">${p.amount.toFixed(2)}</TableCell>
+                    <TableCell>{p.paidByName}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setHistoryDialog({ open: false, saleId: null, saleDate: null })}>
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={3000}
+        onClose={() => setSnack(s => ({ ...s, open: false }))}
+      >
+        <Alert severity={snack.severity} sx={{ width: "100%" }}>
+          {snack.msg}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };

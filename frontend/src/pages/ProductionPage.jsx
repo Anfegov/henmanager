@@ -8,12 +8,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { getBatches } from "../api/batchesApi";
 import { getProductions, registerProduction, updateProduction, deleteProduction } from "../api/productionApi";
+import { eggTypesApi } from "../api/eggTypesApi";
+import { useAuth } from "../auth/useAuth";
 
-const eggTypes = ["Pequeno","Mediano","Grande","ExtraGrande","DobleYema","Roto"];
 const today = new Date().toISOString().substring(0, 10);
 
 export const ProductionPage = () => {
+  const { hasPermission } = useAuth();
+  const canCreate = hasPermission("CreateProduction");
+  const canEdit = hasPermission("EditProduction");
+  const canDelete = hasPermission("DeleteProduction");
+
   const [batches, setBatches] = useState([]);
+  const [eggTypes, setEggTypes] = useState([]);
   const [productions, setProductions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -24,7 +31,7 @@ export const ProductionPage = () => {
   const [form, setForm] = useState({
     henBatchId: "",
     date: today,
-    eggType: "Mediano",
+    eggType: "",
     quantity: ""
   });
 
@@ -34,10 +41,18 @@ export const ProductionPage = () => {
   const load = async () => {
     setLoading(true);
     try {
-      const b = await getBatches();
+      const [b, p, et] = await Promise.all([
+        getBatches(),
+        getProductions({}),
+        eggTypesApi.getAll(true) // solo activos
+      ]);
       setBatches(b.data.filter(x => x.isActive));
-      const p = await getProductions({});
       setProductions(p.data);
+      setEggTypes(et);
+      // Establecer tipo de huevo por defecto si hay tipos
+      if (et.length > 0 && !form.eggType) {
+        setForm(f => ({ ...f, eggType: et[0].name }));
+      }
     } catch (err) {
       showSnack("Error cargando datos.", "error");
     } finally {
@@ -51,7 +66,7 @@ export const ProductionPage = () => {
 
   const resetForm = () => {
     setEditing(null);
-    setForm({ henBatchId: "", date: today, eggType: "Mediano", quantity: "" });
+    setForm({ henBatchId: "", date: today, eggType: eggTypes[0]?.name || "", quantity: "" });
   };
 
   const handleSubmit = async (e) => {
@@ -111,52 +126,54 @@ export const ProductionPage = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              {editing ? "Editar registro" : "Registrar postura diaria"}
-            </Typography>
-            <Stack spacing={2} component="form" onSubmit={handleSubmit}>
-              <TextField select label="Camada" name="henBatchId" value={form.henBatchId}
-                onChange={handleChange} fullWidth required>
-                {batches.map(b => (
-                  <MenuItem key={b.id} value={b.id}>{b.name}</MenuItem>
-                ))}
-              </TextField>
+      {(canCreate || editing) && (
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                {editing ? "Editar registro" : "Registrar postura diaria"}
+              </Typography>
+              <Stack spacing={2} component="form" onSubmit={handleSubmit}>
+                <TextField select label="Camada" name="henBatchId" value={form.henBatchId}
+                  onChange={handleChange} fullWidth required>
+                  {batches.map(b => (
+                    <MenuItem key={b.id} value={b.id}>{b.name}</MenuItem>
+                  ))}
+                </TextField>
 
-              <TextField label="Fecha" type="date" name="date"
-                value={form.date} onChange={handleChange} fullWidth
-                InputLabelProps={{ shrink: true }}
-                inputProps={{ max: today }}
-              />
+                <TextField label="Fecha" type="date" name="date"
+                  value={form.date} onChange={handleChange} fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  inputProps={{ max: today }}
+                />
 
-              <TextField select label="Tipo de huevo" name="eggType"
-                value={form.eggType} onChange={handleChange} fullWidth>
-                {eggTypes.map(t => (
-                  <MenuItem key={t} value={t}>{t}</MenuItem>
-                ))}
-              </TextField>
+                <TextField select label="Tipo de huevo" name="eggType"
+                  value={form.eggType} onChange={handleChange} fullWidth>
+                  {eggTypes.map(t => (
+                    <MenuItem key={t.id} value={t.name}>{t.name}</MenuItem>
+                  ))}
+                </TextField>
 
-              <TextField label="Cantidad" type="number" name="quantity"
-                value={form.quantity} onChange={handleChange} fullWidth required
-                inputProps={{ min: 1 }}
-              />
+                <TextField label="Cantidad" type="number" name="quantity"
+                  value={form.quantity} onChange={handleChange} fullWidth required
+                  inputProps={{ min: 1 }}
+                />
 
-              <Stack direction="row" spacing={1}>
-                <Button type="submit" variant="contained" disabled={saving}>
-                  {saving ? "Guardando..." : editing ? "Actualizar" : "Guardar"}
-                </Button>
-                {editing && (
-                  <Button onClick={resetForm}>Cancelar</Button>
-                )}
+                <Stack direction="row" spacing={1}>
+                  <Button type="submit" variant="contained" disabled={saving}>
+                    {saving ? "Guardando..." : editing ? "Actualizar" : "Guardar"}
+                  </Button>
+                  {editing && (
+                    <Button onClick={resetForm}>Cancelar</Button>
+                  )}
+                </Stack>
               </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+      )}
 
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={(canCreate || editing) ? 8 : 12}>
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>Últimos registros</Typography>
@@ -185,11 +202,21 @@ export const ProductionPage = () => {
                         <TableCell>{p.eggType}</TableCell>
                         <TableCell align="right">{p.quantity}</TableCell>
                         <TableCell align="right">
-                          <IconButton size="small" onClick={() => handleEdit(p)}>
+                          <IconButton
+                            size="small"
+                            onClick={() => handleEdit(p)}
+                            disabled={!canEdit}
+                            title={canEdit ? "Editar" : "Sin permiso para editar"}
+                          >
                             <EditIcon fontSize="small" />
                           </IconButton>
-                          <IconButton size="small" color="error"
-                            onClick={() => setConfirmDelete({ open: true, id: p.id })}>
+                          <IconButton
+                            size="small"
+                            color="error"
+                            onClick={() => setConfirmDelete({ open: true, id: p.id })}
+                            disabled={!canDelete}
+                            title={canDelete ? "Eliminar" : "Sin permiso para eliminar"}
+                          >
                             <DeleteIcon fontSize="small" />
                           </IconButton>
                         </TableCell>

@@ -35,7 +35,7 @@ public class EggProductionController : ControllerBase
     }
 
     [HttpPost("RegisterDailyProduction")]
-    [Authorize(Policy = "RegisterDailyProduction")]
+    [Authorize(Policy = "CreateProduction")]
     public async Task<ActionResult<EggProduction>> RegisterDailyProduction([FromBody] EggProduction request)
     {
         if (request.Quantity <= 0) return BadRequest("Cantidad inválida.");
@@ -54,7 +54,7 @@ public class EggProductionController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    [Authorize(Policy = "RegisterDailyProduction")]
+    [Authorize(Policy = "EditProduction")]
     public async Task<ActionResult<EggProduction>> Update(Guid id, [FromBody] EggProduction request)
     {
         var production = await _db.EggProductions.Find(p => p.Id == id).FirstOrDefaultAsync();
@@ -80,7 +80,7 @@ public class EggProductionController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    [Authorize(Policy = "RegisterDailyProduction")]
+    [Authorize(Policy = "DeleteProduction")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _db.EggProductions.DeleteOneAsync(p => p.Id == id);

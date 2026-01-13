@@ -8,13 +8,14 @@ namespace HenManager.Api.Controllers;
 
 [ApiController]
 [Route("api/customers")]
-[Authorize(Policy = "ManageCustomers")]
+[Authorize]
 public class CustomersController : ControllerBase
 {
     private readonly MongoDbContext _db;
     public CustomersController(MongoDbContext db) => _db = db;
 
     [HttpGet]
+    [Authorize(Policy = "ViewCustomers")]
     public async Task<ActionResult<List<Customer>>> GetAll([FromQuery] bool activeOnly = false, [FromQuery] string? search = null)
     {
         var filter = Builders<Customer>.Filter.Empty;
@@ -37,6 +38,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Policy = "ViewCustomers")]
     public async Task<ActionResult<Customer>> GetById(Guid id)
     {
         var customer = await _db.Customers.Find(c => c.Id == id).FirstOrDefaultAsync();
@@ -45,6 +47,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "CreateCustomer")]
     public async Task<ActionResult<Customer>> Create(Customer request)
     {
         if (string.IsNullOrWhiteSpace(request.Name))
@@ -62,6 +65,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Policy = "EditCustomer")]
     public async Task<ActionResult<Customer>> Update(Guid id, Customer request)
     {
         var customer = await _db.Customers.Find(c => c.Id == id).FirstOrDefaultAsync();
@@ -81,6 +85,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "DeleteCustomer")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _db.Customers.DeleteOneAsync(c => c.Id == id);

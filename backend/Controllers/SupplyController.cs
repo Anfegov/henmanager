@@ -26,7 +26,7 @@ public class SupplyController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = "RegisterSupply")]
+    [Authorize(Policy = "CreateSupply")]
     public async Task<ActionResult<Supply>> Create(Supply request)
     {
         if (request.HenBatchId == Guid.Empty) return BadRequest("Camada inválida.");
@@ -45,7 +45,7 @@ public class SupplyController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    [Authorize(Policy = "RegisterSupply")]
+    [Authorize(Policy = "EditSupply")]
     public async Task<ActionResult<Supply>> Update(Guid id, Supply request)
     {
         var supply = await _db.Supplies.Find(s => s.Id == id).FirstOrDefaultAsync();
@@ -69,7 +69,7 @@ public class SupplyController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    [Authorize(Policy = "RegisterSupply")]
+    [Authorize(Policy = "DeleteSupply")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _db.Supplies.DeleteOneAsync(s => s.Id == id);

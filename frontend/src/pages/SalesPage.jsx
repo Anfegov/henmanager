@@ -21,9 +21,9 @@ import {
 import { getBatches } from "../api/batchesApi";
 import { salesApi } from "../api/salesApi";
 import { customersApi } from "../api/customersApi";
+import { eggTypesApi } from "../api/eggTypesApi";
 import axiosClient from "../api/axiosClient";
-
-const eggTypes = ["Pequeno","Mediano","Grande","ExtraGrande","DobleYema","Roto"];
+import { useAuth } from "../auth/useAuth";
 
 const paymentTypes = [
   { value: "Contado", label: "Contado" },
@@ -33,8 +33,12 @@ const paymentTypes = [
 const today = new Date().toISOString().substring(0, 10);
 
 export const SalesPage = () => {
+  const { hasPermission } = useAuth();
+  const canCreate = hasPermission("CreateSale");
+
   const [batches, setBatches] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [eggTypes, setEggTypes] = useState([]);
   const [sales, setSales] = useState([]);
   const [stockByType, setStockByType] = useState([]);
   const [saving, setSaving] = useState(false);
@@ -46,7 +50,7 @@ export const SalesPage = () => {
   const [form, setForm] = useState({
     henBatchId: "",
     customerId: "",
-    eggType: "Mediano",
+    eggType: "",
     date: today,
     quantity: "",
     unitPrice: "",
@@ -59,15 +63,21 @@ export const SalesPage = () => {
   );
 
   const load = async () => {
-    const [bRes, cRes, sRes] = await Promise.all([
+    const [bRes, cRes, sRes, etRes] = await Promise.all([
       getBatches(),
       customersApi.getAll(),
-      salesApi.getAll()
+      salesApi.getAll(),
+      eggTypesApi.getAll(true) // solo activos
     ]);
 
     setBatches(bRes.data);
     setCustomers(cRes);
     setSales(sRes);
+    setEggTypes(etRes);
+    // Establecer tipo de huevo por defecto si hay tipos
+    if (etRes.length > 0 && !form.eggType) {
+      setForm(f => ({ ...f, eggType: etRes[0].name }));
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -121,12 +131,13 @@ export const SalesPage = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6">Registrar venta</Typography>
+      {canCreate && (
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">Registrar venta</Typography>
 
-            <Stack component="form" spacing={2} sx={{ mt: 2 }} onSubmit={onSubmit}>
+              <Stack component="form" spacing={2} sx={{ mt: 2 }} onSubmit={onSubmit}>
               <TextField
                 select
                 label="Camada"
@@ -159,7 +170,7 @@ export const SalesPage = () => {
                 required
               >
                 {eggTypes.map(t => (
-                  <MenuItem key={t} value={t}>{t}</MenuItem>
+                  <MenuItem key={t.id} value={t.name}>{t.name}</MenuItem>
                 ))}
               </TextField>
 
@@ -214,8 +225,9 @@ export const SalesPage = () => {
           </CardContent>
         </Card>
       </Grid>
+      )}
 
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={canCreate ? 8 : 12}>
         <Card>
           <CardContent>
             <Typography variant="h6">Historial de ventas</Typography>
@@ -232,6 +244,7 @@ export const SalesPage = () => {
                   <TableCell>Total</TableCell>
                   <TableCell>Pago</TableCell>
                   <TableCell>Estado</TableCell>
+                  <TableCell>Registrado por</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -254,11 +267,12 @@ export const SalesPage = () => {
                         color={s.creditStatus === "Pendiente" ? "warning" : "success"}
                       />
                     </TableCell>
+                    <TableCell>{s.soldByName || "-"}</TableCell>
                   </TableRow>
                 ))}
                 {sales.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={9}>
+                    <TableCell colSpan={10}>
                       <Typography variant="body2" color="text.secondary">
                         No hay ventas registradas.
                       </Typography>

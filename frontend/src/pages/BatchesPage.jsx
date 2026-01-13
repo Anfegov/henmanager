@@ -26,10 +26,16 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { getBatches, createBatch, updateBatch, closeBatch } from "../api/batchesApi";
+import { useAuth } from "../auth/useAuth";
 
 const today = new Date().toISOString().slice(0, 10);
 
 export const BatchesPage = () => {
+  const { hasPermission } = useAuth();
+  const canCreate = hasPermission("CreateBatch");
+  const canEdit = hasPermission("EditBatch");
+  const canClose = hasPermission("CloseBatch");
+
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -151,68 +157,70 @@ export const BatchesPage = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>Nueva camada</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Registra una nueva camada/lote de gallinas para controlar su postura.
-            </Typography>
+      {canCreate && (
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>Nueva camada</Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Registra una nueva camada/lote de gallinas para controlar su postura.
+              </Typography>
 
-            <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-              <TextField
-                label="Nombre de la camada"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                required
-              />
+              <Stack component="form" spacing={2} onSubmit={handleSubmit}>
+                <TextField
+                  label="Nombre de la camada"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
 
-              <TextField
-                label="Fecha de inicio"
-                name="startDate"
-                type="date"
-                value={form.startDate}
-                onChange={handleChange}
-                InputLabelProps={{ shrink: true }}
-                inputProps={{ max: today }}
-                required
-              />
+                <TextField
+                  label="Fecha de inicio"
+                  name="startDate"
+                  type="date"
+                  value={form.startDate}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
+                  inputProps={{ max: today }}
+                  required
+                />
 
-              <TextField
-                label="Cantidad inicial de gallinas"
-                name="hensCount"
-                type="number"
-                value={form.hensCount}
-                onChange={handleChange}
-                inputProps={{ min: 1 }}
-                required
-              />
+                <TextField
+                  label="Cantidad inicial de gallinas"
+                  name="hensCount"
+                  type="number"
+                  value={form.hensCount}
+                  onChange={handleChange}
+                  inputProps={{ min: 1 }}
+                  required
+                />
 
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={loading || saving}
-              >
-                {saving ? "Guardando..." : "Guardar camada"}
-              </Button>
-            </Stack>
-          </CardContent>
-        </Card>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={loading || saving}
+                >
+                  {saving ? "Guardando..." : "Guardar camada"}
+                </Button>
+              </Stack>
+            </CardContent>
+          </Card>
 
-        <Card sx={{ mt: 3 }}>
-          <CardContent>
-            <Typography variant="subtitle2" color="text.secondary">Resumen</Typography>
-            <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-              <Chip label={`Total: ${batches.length}`} />
-              <Chip color="success" label={`Activas: ${activeCount}`} />
-              <Chip color="default" label={`Cerradas: ${batches.length - activeCount}`} />
-            </Stack>
-          </CardContent>
-        </Card>
-      </Grid>
+          <Card sx={{ mt: 3 }}>
+            <CardContent>
+              <Typography variant="subtitle2" color="text.secondary">Resumen</Typography>
+              <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                <Chip label={`Total: ${batches.length}`} />
+                <Chip color="success" label={`Activas: ${activeCount}`} />
+                <Chip color="default" label={`Cerradas: ${batches.length - activeCount}`} />
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
+      )}
 
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={canCreate ? 8 : 12}>
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>Camadas registradas</Typography>
@@ -253,10 +261,15 @@ export const BatchesPage = () => {
                           )}
                         </TableCell>
                         <TableCell align="right">
-                          <IconButton size="small" onClick={() => openEditDialog(b)}>
+                          <IconButton
+                            size="small"
+                            onClick={() => openEditDialog(b)}
+                            disabled={!canEdit}
+                            title={canEdit ? "Editar" : "Sin permiso para editar"}
+                          >
                             <EditIcon fontSize="small" />
                           </IconButton>
-                          {b.isActive && (
+                          {b.isActive && canClose && (
                             <Button
                               size="small"
                               color="warning"

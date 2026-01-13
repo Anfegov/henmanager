@@ -21,6 +21,7 @@ public interface IMongoDbContext
     IMongoCollection<Payment> Payments { get; }
     IMongoCollection<Supply> Supplies { get; }
     IMongoCollection<Customer> Customers { get; }
+    IMongoCollection<EggTypeEntity> EggTypes { get; }
 }
 
 public class MongoDbContext : IMongoDbContext
@@ -42,4 +43,5 @@ public class MongoDbContext : IMongoDbContext
     public IMongoCollection<Payment> Payments => _db.GetCollection<Payment>("Payments");
     public IMongoCollection<Supply> Supplies => _db.GetCollection<Supply>("Supplies");
     public IMongoCollection<Customer> Customers => _db.GetCollection<Customer>("Customers");
+    public IMongoCollection<EggTypeEntity> EggTypes => _db.GetCollection<EggTypeEntity>("EggTypes");
 }

@@ -14,7 +14,7 @@ public class HenBatchController : ControllerBase
     public HenBatchController(MongoDbContext db) => _db = db;
 
     [HttpGet]
-    [Authorize(Policy = "ViewBatch")]
+    [Authorize(Policy = "ViewBatches")]
     public async Task<ActionResult<IEnumerable<HenBatch>>> GetAll()
     {
         var list = await _db.HenBatches.Find(_ => true)
@@ -24,7 +24,7 @@ public class HenBatchController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    [Authorize(Policy = "ViewBatch")]
+    [Authorize(Policy = "ViewBatches")]
     public async Task<ActionResult<HenBatch>> GetById(Guid id)
     {
         var batch = await _db.HenBatches.Find(b => b.Id == id).FirstOrDefaultAsync();
@@ -49,7 +49,7 @@ public class HenBatchController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    [Authorize(Policy = "CreateBatch")]
+    [Authorize(Policy = "EditBatch")]
     public async Task<ActionResult<HenBatch>> Update(Guid id, HenBatch request)
     {
         var batch = await _db.HenBatches.Find(b => b.Id == id).FirstOrDefaultAsync();

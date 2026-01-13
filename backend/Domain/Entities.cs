@@ -20,15 +20,12 @@ public class User : MongoEntity
     public string UserName { get; set; } = default!;
     public string PasswordHash { get; set; } = default!;
     public bool IsActive { get; set; } = true;
-    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public List<Guid> RoleIds { get; set; } = new();
 }
 
 public class Role : MongoEntity
 {
     public string Name { get; set; } = default!;
-    // permisos referenciados por UUID (PermissionEntity.Id)
-    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public List<Guid> PermissionIds { get; set; } = new();
     // compatibilidad con roles antiguos que guardaban códigos
     [BsonElement("permissions")]
@@ -52,6 +49,7 @@ public class HenBatch : MongoEntity
     public string? Notes { get; set; }
 }
 
+// Enum legacy para compatibilidad con datos existentes
 public enum EggType
 {
     Pequeno,
@@ -60,6 +58,15 @@ public enum EggType
     ExtraGrande,
     DobleYema,
     Roto
+}
+
+// Entidad para tipos de huevo dinámicos
+public class EggTypeEntity : MongoEntity
+{
+    public string Name { get; set; } = default!;
+    public string? Description { get; set; }
+    public bool IsActive { get; set; } = true;
+    public int DisplayOrder { get; set; } = 0;
 }
 
 public class EggProduction : MongoEntity
